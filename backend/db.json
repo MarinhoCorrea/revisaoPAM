@@ -1,22 +1,11 @@
 {
   "people": [
     {
-      "id": "4663",
-      "firstname": "Paulo",
-      "lastname": "Hernandes",
-      "email": "Paulo@hernandes"
-    },
-    {
-      "id": "c211",
-      "firstname": "A",
-      "lastname": "B",
-      "email": "Ag"
-    },
-    {
-      "id": "b6ea",
-      "firstname": "A ",
-      "lastname": "B",
-      "email": "ABc"
+      "id": "3931",
+      "firstname": "Denise ",
+      "lastname": "Rodrigues ",
+      "email": "Ahjdjd",
+      "phone": "17728393"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

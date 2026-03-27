@@ -35,6 +35,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  buttonDisabled: {
+    backgroundColor: '#999999',
+    opacity: 0.6,
+  },
 });
 
 export default styles;

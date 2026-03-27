@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Alert, TextInput, ActivityIndicator } from 'react-native';
 import styles from '../styles/HomeStyle';
 import { getAllPeople, deletePerson } from '../api/service';
 
 const HomeScreen = ({ navigation }) => {
   const [people, setPeople] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchData = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const data = await getAllPeople();
       setPeople(data);
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possível carregar os dados.');
+      setError('Não foi possível carregar os dados. Verifique sua conexão.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,10 +35,9 @@ const HomeScreen = ({ navigation }) => {
       'Confirmar Exclusão',
       'Tem certeza que deseja excluir esta pessoa?',
       [
-        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Cancelar'},
         {
           text: 'Excluir',
-          style: 'destructive',
           onPress: async () => {
             try {
               await deletePerson(id);
@@ -44,6 +50,11 @@ const HomeScreen = ({ navigation }) => {
       ]
     );
   };
+
+  const filteredPeople = people.filter((person) => {
+    const searchLower = searchTerm.toLowerCase();
+    return person.firstname.toLowerCase().includes(searchLower);
+  });
 
   const renderPerson = ({ item }) => (
     <View style={styles.personContainer}>
@@ -67,17 +78,39 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lista de Pessoas</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Create')}
-      >
-        <Text style={styles.buttonText}>Criar Nova Pessoa</Text>
-      </TouchableOpacity>
-      <FlatList
-        data={people}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderPerson}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Pesquisar por primeiro nome..."
+        value={searchTerm}
+        onChangeText={setSearchTerm}
       />
+      {loading ? (
+        <ActivityIndicator size="large" color="#666666" style={styles.loader} />
+      ) : error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={fetchData}
+          >
+            <Text style={styles.buttonText}>Tentar Novamente</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('AddEdit')}
+          >
+            <Text style={styles.buttonText}>Criar Nova Pessoa</Text>
+          </TouchableOpacity>
+          <FlatList
+            data={filteredPeople}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderPerson}
+          />
+        </>
+      )}
     </View>
   );
 };

@@ -14,6 +14,17 @@ const styles = StyleSheet.create({
     color: '#333333', 
     letterSpacing: 0.5,
   },
+  searchInput: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    marginBottom: 16,
+    color: '#333333',
+  },
   personContainer: {
     marginBottom: 16,
     padding: 16,
@@ -41,6 +52,24 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginTop: 8,
     alignItems: 'center',
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#d32f2f',
+    textAlign: 'center',
+    marginBottom: 16,
+    fontWeight: '500',
   },
 });
 
